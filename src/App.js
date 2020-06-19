@@ -39,9 +39,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
   const db=app.database();
   //firebase.analytics();
   const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
+    { id: 'name', label: 'Name', minWidth: 170, align:'right', },
     { id: 'size', label: 'Size', minWidth: 170, align: 'right', },
     { id: 'phone', label: 'Phone', minWidth: 170, align: 'right',},
+    // { id: 'actions', label: 'Actions',  minWidth: 170, align: 'right',},
   ];
   
   // const rows = [
@@ -56,7 +57,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
   var size_list=[];
   var phone_list=[];
 
-  var myDetails=[];
+  var myDetails=[{name:'sandeep',size:4,phone:9909989976},];
   var rows=myDetails;
 class App extends Component {
   
@@ -80,14 +81,15 @@ handleClose = () => {
 submitForm=()=>{
   this.setState({open:false});
   console.log('form now submitted');
-  var newName = document.getElementById("name_details").value;
-  names_list.push(newName);
-  var newSize = document.getElementById("size_details").value;
-  size_list.push(newSize);
-  var newPhone = document.getElementById("phone_details").value;
-  phone_list.push(newPhone);
-  myDetails.push({name:newName,size:newSize,phone:newPhone});
-  console.log(myDetails);
+
+  const newName = document.getElementById("name_details").value;
+
+  const newSize = document.getElementById("size_details").value;
+
+  const newPhone = document.getElementById("phone_details").value;
+  const myDetails={name:newName,size:newSize,phone:newPhone}
+  //console.log(myDetails);
+  db.ref("/persons_list").push({name:newName,size:newSize,phone:newPhone});
 }
   
   render() {
@@ -101,9 +103,8 @@ submitForm=()=>{
         </header>
         
         <p>You have clicked {this.state.counter['count']} number of times</p>
-        <button onClick={this.clicked}>Click here</button>
-        <button onClick={this.reset}>Reset count</button>
-        <Paper style={{width:"80%", padding:'2% 10%'}}>
+        
+        <Paper style={{width:"80%", padding:'2% 10%', boxShadow:'0 0 0',}}>
         <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -115,38 +116,41 @@ submitForm=()=>{
                   style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
-                </TableCell>
+                </TableCell> 
               ))}
+              <TableCell
+                  key='actions'
+                  align='right'
+                  style={{ minWidth: '170px' }}
+                >
+                  Actions
+                </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {console.log(rows)}
+            {console.log('checking rows in table'+rows)}
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                   {columns.map((column) => {
                     const value = row[column.id];
+                    {console.log('checking column :: '+column.align)}
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.format && typeof value === 'number' ? column.format(value) : value}
                       </TableCell>
                     );
                   })}
+                  <TableCell  align='right'>
+                  <button onClick={this.clicked}>Click here</button>
+                  <button onClick={this.reset}>Reset count</button>
+                  </TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
         </Table>
         </TableContainer>
-          <TablePagination
-        // rowsPerPageOptions={[5,10,15]}
-        // component="div"
-        // count={rows.length}
-        // rowsPerPage={rowsPerPage}
-        // page={page}
-        // onChangePage={this.handleChangePage}
-        // onChangeRowsPerPage={this.handleChangeRowsPerPage}
-          />
       </Paper> 
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}> Add new</Button>
         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
@@ -164,7 +168,7 @@ submitForm=()=>{
           <option value='6'>6</option>
         </select><br></br><br></br>
         <label htmlFor="phone_details">Contact no:</label>
-        <input type="tel" id="phone_details" name="phone_details" pattern="[0-9]{10}" required></input>
+        <input type="tel" id="phone_details" name="phone_details" required></input>
        </form>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
@@ -176,26 +180,29 @@ submitForm=()=>{
             
           </DialogActions>
         </Dialog>
-
-
-
-
-
-
     </div>
     );
   }
-  clicked=() => { const current= Number(this.state.counter['count']); db.ref("/").update({count:current+1});
+  clicked=() => { 
+    const current= Number(this.state.counter['count']); 
+    db.ref("/").update({count:current+1});
 }
-reset=() => { const current= Number(this.state.counter['count']); db.ref("/").update({count:0});
+reset=() => { 
+  const current= Number(this.state.counter['count']); 
+  db.ref("/").update({count:0});
 }
   componentDidMount(){
     const that=this;
     const docRef = db.ref('/');
+    const docRefPersons = db.ref('/persons_list/');
     docRef.on('value',function(snapshot){
       const value1= snapshot.val();
       that.setState({counter:value1});
       //console.log(that.state);
+    })
+    docRefPersons.on('value',function(snapshot){
+      myDetails.push(snapshot.val()); // id is being pulled - which is not a defined in myDetails array. 
+      console.log('checking snap ::: '+snapshot.val());
     })
   }
 }
