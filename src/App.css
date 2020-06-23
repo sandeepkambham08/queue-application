@@ -27,6 +27,13 @@
   to { transform: rotate(360deg); }
 }
 
+.check{
+  background-color: lawngreen;
+}
+.check1.active{
+background-color: rgb(8, 0, 0);
+}
+
 .MuiPaper-elevation1{
 box-shadow: 0;
 }
@@ -71,8 +78,16 @@ box-shadow: 0;
   color:white;
   background-color: tomato;
 }
+
+.Party-size-block.active{
+  color:white;
+  background-color:black;
+}
 .Party-size-block Button:hover{
   background-color: rgb(112, 2, 2);
+}
+.Party-size-block Button.selected{
+  background-color: rgb(46, 13, 197);
 }
 .Button-first-set{
   display: inline-block;
