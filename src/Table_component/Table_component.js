@@ -18,14 +18,17 @@ const columns = [
   { id: 'phone', label: 'Phone', minWidth: 170, align: 'right', },
   // { id: 'actions', label: 'Actions',  minWidth: 170, align: 'right',},
 ];
+let total_size=0;
 
 const table_list = (props) =>{
 
 return ( 
 <Paper style={{ width: "80%", padding: '2% 10%', boxShadow: '0 0 0', }}>
+<p> * * {props.title} * * </p>
   <TableContainer className='Table_block'>
     <Table stickyHeader aria-label="sticky table">
       <TableHead className='Table-head-own'>
+       
         <TableRow className='Table-head-row-own'>
           {columns.map((column) => (
             <TableCell
@@ -52,7 +55,7 @@ return (
           const phone_value = props.name[key].phone;
           return (
             <TableRow hover key={key}>
-              {/*console.log(key)*/}
+              {console.log(key)}
               <TableCell key={columns.name} align='right'>
                 {name_value}
               </TableCell>
@@ -76,9 +79,57 @@ return (
 <button className={`check ${this.state.active==="first"? 'active':''}`} id="first" >Hello World</button>
 <button className={`check ${this.state.active==="second"? 'active':''}`}id="second" >Good Bye World</button>
   </div> */}
+  {Object.keys(props.name).map((key) => {
+    const size_value  = props.name[key].size;
+    total_size = total_size+size_value;
+    /*console.log(total_size);*/
+  })}
+<p>{props.sizeComment} {props.size}</p> 
 <br></br> <Button variant="outlined" color="primary" onClick={props.add_new} > {props.comment} </Button> 
-</Paper> ); 
+
+</Paper>); 
 }
 
 
 export default table_list;
+
+// <Table_own
+// name={this.state.newMyDetails}
+// check={this.clicked}
+// cross={this.reset}
+// add_new={this.handleClickOpen}
+// comment='+Add new'
+// size={this.totalSizeValue()}
+// sizeComment='Total customers in line: '
+//     /> 
+// {/* Add new button*/}
+//  <Pop_up_form
+//     open={this.state.open}
+//     close={this.handleClose}
+//     size_select={this.handleSizeButtonClick}
+//     active={this.state.active}
+//     submit={this.submitForm}
+//     header='Fill in the customer details'
+//   />
+
+// {/*Table2*/}
+// <Table_own
+// name={this.state.waitMyDetails}
+// check={this.waitingClicked}
+// cross={this.reset}
+// add_new={this.handleClickOpen2}
+// comment='+Waiting list'
+// size={this.totalWaitingSizeValue()}
+// sizeComment='Total customers waiting line: '
+//     />
+
+// {/* Add waiting list button*/}
+//   <Pop_up_form
+//     open={this.state.open2}
+//     close={this.handleClose2}
+//     size_select={this.handleSizeButtonClick}
+//     active={this.state.active}
+//     submit={this.submitWaitingForm}
+//     header= {<p> Waiting list - 
+//     fill in the customer details</p>}
+// />

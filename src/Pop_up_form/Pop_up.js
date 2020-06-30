@@ -13,8 +13,8 @@ const Pop_up_form = (props) =>{
 
     return(
         <Dialog className='PopUp' open={props.open} onClose={props.close} aria-labelledby="form-dialog-title">
-        <DialogTitle className='Pop-up-header' id="form-dialog-title">
-          <p>Fill the customer details below </p>
+        <DialogTitle className='Pop-up-header' id="form-dialog-title"> 
+        <p>{props.header} </p>
         </DialogTitle>
 
         <form>
