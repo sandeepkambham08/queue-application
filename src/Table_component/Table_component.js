@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import check_logo from '../check_logo.png';
-import cross_logo from '../cross_logo.png';
+import check_logo from '../Media/check_logo.png';
+import cross_logo from '../Media/cross_logo.png';
 
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -10,6 +10,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
+
 import Button from '@material-ui/core/Button';
 
 const columns = [
@@ -18,18 +19,17 @@ const columns = [
   { id: 'phone', label: 'Phone', minWidth: 170, align: 'right', },
   // { id: 'actions', label: 'Actions',  minWidth: 170, align: 'right',},
 ];
-let total_size=0;
 
 const table_list = (props) =>{
 
 return ( 
+<div>
 <Paper style={{ width: "80%", padding: '2% 10%', boxShadow: '0 0 0', }}>
 <p> * * {props.title} * * </p>
   <TableContainer className='Table_block'>
     <Table stickyHeader aria-label="sticky table">
-      <TableHead className='Table-head-own'>
-       
-        <TableRow className='Table-head-row-own'>
+      {/* <TableHead className='stickyTry'> */}
+      <TableRow className='Table-head-row-own'>
           {columns.map((column) => (
             <TableCell
               key={column.id}
@@ -46,16 +46,17 @@ return (
           >
             Actions
         </TableCell>
-        </TableRow>
-      </TableHead>
+       </TableRow>
+       
+      {/* </TableHead> */}
        <TableBody>
-        {Object.keys(props.name).map((key, index) => {
-          const name_value  = props.name[key].name;
-          const size_value  = props.name[key].size;
-          const phone_value = props.name[key].phone;
+        {Object.keys(props.details).map((key, index) => {
+          const name_value  = props.details[key].name;
+          const size_value  = props.details[key].size;
+          const phone_value = props.details[key].phone;
           return (
             <TableRow hover key={key}>
-              {console.log(key)}
+              {/*{console.log(key)}*/}
               <TableCell key={columns.name} align='right'>
                 {name_value}
               </TableCell>
@@ -66,7 +67,7 @@ return (
                 {phone_value}
               </TableCell>
                <TableCell align='right'>
-                <img onClick={() => { props.check(key) }} src={check_logo} alt='check-in' style={{ height: '24px', width: '24px', paddingRight: '10px' }} />
+                <img onClick={() => { props.check(props.title,key) }}  src={check_logo} alt='check-in' style={{ height: '24px', width: '24px', paddingRight: '10px' }} />
                 <img onClick={props.cross} src={cross_logo} alt='cross' style={{ height: '24px', width: '24px' }} />
               </TableCell> 
             </TableRow>
@@ -79,19 +80,17 @@ return (
 <button className={`check ${this.state.active==="first"? 'active':''}`} id="first" >Hello World</button>
 <button className={`check ${this.state.active==="second"? 'active':''}`}id="second" >Good Bye World</button>
   </div> */}
-  {Object.keys(props.name).map((key) => {
-    const size_value  = props.name[key].size;
-    total_size = total_size+size_value;
-    /*console.log(total_size);*/
-  })}
 <p>{props.sizeComment} {props.size}</p> 
-<br></br> <Button variant="outlined" color="primary" onClick={props.add_new} > {props.comment} </Button> 
+<br></br> <Button variant="outlined" color="primary" onClick={props.add_new} value={props.title} > {props.comment} </Button> 
 
-</Paper>); 
+
+</Paper>
+</div>
+); 
 }
 
 
-export default table_list;
+export default React.memo(table_list);
 
 // <Table_own
 // name={this.state.newMyDetails}

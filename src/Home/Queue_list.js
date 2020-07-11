@@ -3,11 +3,16 @@ import './Queue_list.css'
 
 const Queue = (props) =>{
     return(
-        <div className='Queue_list' onClick={props.clicked} >
-    <h1 style={{background:'rgb(11, 100, 93)', color:'white'}}>{props.name}</h1> 
+        <div className='Queue_block'>
+        <button className='tableDeleteButton' onClick={()=>{props.button(props.name)}}>X</button>
+        <div className='Queue_list' onClick={()=>{props.clicked(props.name)}} >
+        <h2>{props.name}</h2>
+        
         Customers in line : {props.size}
+        
         </div>
-
+        {/* <button className='tableDeleteButton' onClick={()=>{props.button(props.name)}}>delete</button> */}
+        </div>
     );
 
 }
