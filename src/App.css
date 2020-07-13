@@ -1,6 +1,46 @@
+.loginButton{
+margin-left: 45%;
+}
 .App{
   text-align: center;
 }
+.userLogo{
+  height: 60px;
+  margin-right: 2%;
+  border-radius: 25px;
+  transition: height 400ms ease;
+  border:2px solid rgba(20, 20, 73, 0.87);
+}
+
+.loggedUser{
+  float:right;
+  padding-right: 5%;
+}
+
+.logoutButton{
+  width:70px;
+  padding: 2px 0;
+  background-color: transparent;
+  border: 1px solid rgba(48, 47, 47, 0.945);
+  border-radius: 0.4em;
+  background-color: rgba(199, 6, 45, 0.815);
+  color: rgba(19, 0, 0, 0.822);
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  transition: color 300ms ease-in-out;
+  transition: width 600ms ease;
+}
+
+.logoutButton:hover{
+  box-shadow: 0 0 40px 40px rgb(216, 4, 4) inset;
+    color: white;
+    outline: 0;
+    font-weight: 600;
+    width: 100px;
+}
+
 
 .App-logo {
  /* animation: App-logo-spin infinite 5s linear; */
@@ -19,7 +59,12 @@
   font-size: 15px;
   transition: font-size 400ms ease; 
   transition: padding 200ms ease; 
-  display: inline-block;
+  float:left;
+}
+.appHeaderInner{
+  align-items: center;
+  float:left;
+  margin-left: 40%;
 }
 header.sticky {
   padding: 5px 10px;
@@ -75,6 +120,7 @@ header.sticky {
     outline: 0;
   }
   .newTable{
+    margin-top: 5%;
     float:right;
     margin-right: 5%;
   }
