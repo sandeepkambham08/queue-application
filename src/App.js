@@ -171,7 +171,7 @@ class App extends Component {
       return (
         <div>
           <p>You are not signed in. Click here to sign in.</p>
-          <div id="loginButton" className='loginButton' >Login with Google</div>
+          <div id="loginButton" className='loginButton' onClick={()=>{this.initializeGoogleSignIn()}}>Login with Google</div>
         </div>
       )
     }
@@ -190,13 +190,14 @@ class App extends Component {
     this.forceUpdate()
 })
 revokeAllScopes = function() {
-  
   const auth2 = window.gapi.auth2.getAuthInstance();
   auth2.disconnect();
   console.log(auth2);
-  this.setState({isSignedIn:false});
+  this.setState({isSignedIn:false},()=>{
+    window.location.reload();
+    console.log('reloading after logout')
+  });
 }
-
 
   render() {
     if (!this.state.isSignedIn){
@@ -208,11 +209,13 @@ revokeAllScopes = function() {
           <p className="App-title"> * * Manage your queues here * * </p>
           {/* {this.getContent()} */}
           <div id="loginButton" className='loginButton'></div>
+          {/* <button id="loginButton_own" className='loginButton_own' onClick={this.initializeGoogleSignIn}>Login with Google</button> */}
         </header>
       </div>
       )
     }
     
+
 // ********** Summary view *********
     else if (this.state.isSignedIn && this.state.home) {
       summary = (
@@ -235,7 +238,6 @@ revokeAllScopes = function() {
               />
             )
           })}
-
         </div>
       )
       let userLogo;
@@ -444,6 +446,7 @@ revokeAllScopes = function() {
     script.src='https://apis.google.com/js/api.js';
     script.onload=()=>{
       this.initializeGoogleSignIn();
+      console.log(' script loaded')
     }
     document.body.appendChild(script);
   }
@@ -455,7 +458,6 @@ revokeAllScopes = function() {
         client_id: '91388112809-582c2i440llgjfbb1a73dpiflpgau1lu.apps.googleusercontent.com',
       })
       console.log('App inited')
-
       window.gapi.load('signin2',()=>{
         const params={
           onsuccess:(googleUser)=>{
@@ -474,9 +476,21 @@ revokeAllScopes = function() {
             this.setState({userName:profile.getGivenName()});
             console.log(this.state.userId);
             //db.ref("/Users/"+userId+"/").push({email:userEmail})
+
+            const that =this;
+            const docRefTables = db.ref("/Users/"+that.state.userId+'/all_queues/');
+            docRefTables.on("child_added", function (snapshot) {
+            const table_key = snapshot.key;
+            //const value = snapshot.val();
+            console.log(that.state.userId);
+            that.setState({ title_names: [...that.state.title_names, table_key] });
+            //that.setState({ newMyDetails: { ...that.state.newMyDetails, [key_1]: value } });
+      })
+
+            db.ref("/Users/"+this.state.userId+"/profile_Details/").set({ name: profile.getGivenName(), userLogo: profile.getImageUrl(), userEmail: profile.getEmail() })
           }
         }
-        window.gapi.signin2.render('loginButton', params)
+       window.gapi.signin2.render('loginButton', params)
       })
 
     })
@@ -490,17 +504,18 @@ revokeAllScopes = function() {
     //   const value1 = snapshot.val();
     //   that.setState({ counter: value1 });
     // })
-    this.insertGapiScript();
-    setTimeout(() => {
-      const docRefTables = db.ref("/Users/"+that.state.userId+'/all_queues/');
-      docRefTables.on("child_added", function (snapshot) {
-        const table_key = snapshot.key;
-        //const value = snapshot.val();
-        console.log(that.state.userId);
-        that.setState({ title_names: [...that.state.title_names, table_key] });
-        //that.setState({ newMyDetails: { ...that.state.newMyDetails, [key_1]: value } });
-      })
-  
+
+      this.insertGapiScript();
+      // const docRefTables = db.ref("/Users/"+that.state.userId+'/all_queues/');
+      // docRefTables.on("child_added", function (snapshot) {
+      //   const table_key = snapshot.key;
+      //   //const value = snapshot.val();
+      //   console.log(that.state.userId);
+      //   that.setState({ title_names: [...that.state.title_names, table_key] });
+      //   //that.setState({ newMyDetails: { ...that.state.newMyDetails, [key_1]: value } });
+      // })
+    
+
       const docRefWaiting = db.ref("/Users/"+that.state.userId+'/all_queues/dine_in_customers/waiting_list/');
       docRefWaiting.on("child_added", function (snapshot) {
         const key_2 = snapshot.key;
@@ -508,15 +523,42 @@ revokeAllScopes = function() {
         that.setState({ waitMyDetails: { ...that.state.waitMyDetails, [key_2]: value_wait } });
   
       })
-      console.log('inside timeout')
-    }, 3000);
-
-    
+    //  console.log('inside timeout')
+    // setTimeout(() => {
+    //   const docRefTables = db.ref("/Users/"+that.state.userId+'/all_queues/');
+    //   docRefTables.on("child_added", function (snapshot) {
+    //     const table_key = snapshot.key;
+    //     //const value = snapshot.val();
+    //     console.log(that.state.userId);
+    //     that.setState({ title_names: [...that.state.title_names, table_key] });
+    //     //that.setState({ newMyDetails: { ...that.state.newMyDetails, [key_1]: value } });
+    //   })
+  
+    //   const docRefWaiting = db.ref("/Users/"+that.state.userId+'/all_queues/dine_in_customers/waiting_list/');
+    //   docRefWaiting.on("child_added", function (snapshot) {
+    //     const key_2 = snapshot.key;
+    //     const value_wait = snapshot.val();
+    //     that.setState({ waitMyDetails: { ...that.state.waitMyDetails, [key_2]: value_wait } });
+  
+    //   })
+    //   console.log('inside timeout')
+    // }, 1000);
     
   }
 }
-
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
 
 // totalSizeValue=()=>{
   //   let total_size=0;

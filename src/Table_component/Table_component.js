@@ -21,72 +21,84 @@ const columns = [
 ];
 
 const table_list = (props) =>{
-
-return ( 
-<div>
-<Paper style={{ width: "80%", padding: '2% 10%', boxShadow: '0 0 0', }}>
-<p> * * {props.title} * * </p>
-  <TableContainer className='Table_block'>
-    <Table stickyHeader aria-label="sticky table">
-      {/* <TableHead className='stickyTry'> */}
-      <TableRow className='Table-head-row-own'>
-          {columns.map((column) => (
-            <TableCell
-              key={column.id}
-              align={column.align}
-              style={{ minWidth: column.minWidth }}
-            >
-              {column.label}
-            </TableCell>
-          ))}
-          <TableCell
-            key='actions'
-            align='right'
-            style={{ minWidth: '170px' }}
-          >
-            Actions
-        </TableCell>
-       </TableRow>
-       
-      {/* </TableHead> */}
-       <TableBody>
-        {Object.keys(props.details).map((key, index) => {
-          const name_value  = props.details[key].name;
-          const size_value  = props.details[key].size;
-          const phone_value = props.details[key].phone;
-          return (
-            <TableRow hover key={key}>
-              {/*{console.log(key)}*/}
-              <TableCell key={columns.name} align='right'>
-                {name_value}
+  if (props.details === null || typeof props.details === 'undefined')
+  {
+    console.log(typeof props.details)
+    return(
+      <div>
+        Table already deleted please go back
+      </div>
+    )
+  }
+  else if(props.details !== null || typeof props.details !== 'undefined'){
+    console.log(typeof props.details)
+    return ( 
+      <div>
+      <Paper style={{ width: "80%", padding: '2% 10%', boxShadow: '0 0 0', }}>
+      <p> * * {props.title} * * </p>
+        <TableContainer className='Table_block'>
+          <Table stickyHeader aria-label="sticky table">
+            {/* <TableHead className='stickyTry'> */}
+            <TableRow className='Table-head-row-own'>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+                <TableCell
+                  key='actions'
+                  align='right'
+                  style={{ minWidth: '170px' }}
+                >
+                  Actions
               </TableCell>
-              <TableCell key={columns.size} align='right'>
-                {size_value}
-              </TableCell>
-              <TableCell key={columns.phone} align='right'>
-                {phone_value}
-              </TableCell>
-               <TableCell align='right'>
-                <img onClick={() => { props.check(props.title,key) }}  src={check_logo} alt='check-in' style={{ height: '24px', width: '24px', paddingRight: '10px' }} />
-                <img onClick={props.cross} src={cross_logo} alt='cross' style={{ height: '24px', width: '24px' }} />
-              </TableCell> 
-            </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
-  </TableContainer>
-  {/* <div>
-<button className={`check ${this.state.active==="first"? 'active':''}`} id="first" >Hello World</button>
-<button className={`check ${this.state.active==="second"? 'active':''}`}id="second" >Good Bye World</button>
-  </div> */}
-<p>{props.sizeComment} {props.size}</p> 
-<br></br> <Button variant="outlined" color="primary" onClick={props.add_new} value={props.title} > {props.comment} </Button> 
+             </TableRow>
+             
+            {/* </TableHead> */}
+             <TableBody>
+              {Object.keys(props.details).map((key, index) => {
+                const name_value  = props.details[key].name;
+                const size_value  = props.details[key].size;
+                const phone_value = props.details[key].phone;
+                return (
+                  <TableRow hover key={key}>
+                    {/*{console.log(key)}*/}
+                    <TableCell key={columns.name} align='right'>
+                      {name_value}
+                    </TableCell>
+                    <TableCell key={columns.size} align='right'>
+                      {size_value}
+                    </TableCell>
+                    <TableCell key={columns.phone} align='right'>
+                      {phone_value}
+                    </TableCell>
+                     <TableCell align='right'>
+                      <img onClick={() => { props.check(props.title,key) }}  src={check_logo} alt='check-in' style={{ height: '24px', width: '24px', paddingRight: '10px' }} />
+                      <img onClick={props.cross} src={cross_logo} alt='cross' style={{ height: '24px', width: '24px' }} />
+                    </TableCell> 
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {/* <div>
+      <button className={`check ${this.state.active==="first"? 'active':''}`} id="first" >Hello World</button>
+      <button className={`check ${this.state.active==="second"? 'active':''}`}id="second" >Good Bye World</button>
+        </div> */}
+      <p>{props.sizeComment} {props.size}</p> 
+      <br></br> <Button variant="outlined" color="primary" onClick={props.add_new} value={props.title} > {props.comment} </Button> 
+      
+      
+      </Paper>
+      </div>
+      ); 
+  }
 
-
-</Paper>
-</div>
-); 
 }
 
 

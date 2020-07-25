@@ -1,6 +1,12 @@
 .loginButton{
 margin-left: 45%;
 }
+
+.deepikaContent{
+  font-size: 30px;
+  background-color: crimson;
+  text-align: center;
+}
 .App{
   text-align: center;
 }
