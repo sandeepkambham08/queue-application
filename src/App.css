@@ -90,6 +90,31 @@ header.sticky {
 .App-intro {
   font-size: large;
 }
+.Toolbar{
+  background-color: rgb(84, 87, 87);
+}
+.Toolbar ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.Toolbar li {
+  display: inline-block;
+  margin: 20px;
+}
+
+.Toolbar a{
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.Toolbar a:hover, .Toolbar a:active, .Toolbar a.active{
+  color: #000000; 
+  font-weight: bolder;
+}
 
 .stickyTry{
   top:200px;

@@ -10,7 +10,10 @@ import Table_own from './Table_component/Table_component';
 import Pop_up_form from './Pop_up_form/Pop_up';
 //import Home from './Home/Home';
 import Queue from './Home/Queue_list';
-import Add_table from './Add_table/Add_table'
+import Add_table from './Add_table/Add_table';
+
+import Customer from './Customer/Customer'
+import {Route, Link, NavLink} from 'react-router-dom'
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -53,6 +56,7 @@ class App extends Component {
     userLogo:'',
     userId:'',
     userName:'',
+    customer:true,
   }
 
   handleClickOpen = ev => {
@@ -200,7 +204,34 @@ revokeAllScopes = function() {
 }
 
   render() {
-    if (!this.state.isSignedIn){
+    // ********** Testing customer view *************
+    if(this.state.customer){
+      return(
+      <div  className="App">
+      <header className="App-header">
+        <div className="appHeaderInner">
+        <img id="appLogo" src={logo} className='App-logo' alt='App_logo' />
+        <p className="App-title"> * * Manage your queues here * * </p>
+        </div>
+        {/* {userLogo} */}
+      </header>
+      <div className="Toolbar"> 
+          <nav>
+              <ul>
+                <li><NavLink exact to="/"        >Home</NavLink></li>
+                <li><NavLink to="/routing" >Routing</NavLink></li>
+                <li><NavLink to="/Customer">Customer</NavLink></li>
+              </ul>
+            </nav>
+          </div>
+      <Route path="/Customer" exact component={Customer}/>
+      <body><h2>Routing</h2></body>
+
+      </div>
+      )
+    }
+
+   else if (!this.state.isSignedIn){
       return(
         <div className="App">
         <header className="App-header">
@@ -217,7 +248,7 @@ revokeAllScopes = function() {
     
 
 // ********** Summary view *********
-    else if (this.state.isSignedIn && this.state.home) {
+    else if (this.state.isSignedIn && this.state.home && !this.state.customer) {
       summary = (
         <div>
           {this.state.title_names.map((names) => {
@@ -241,7 +272,7 @@ revokeAllScopes = function() {
         </div>
       )
       let userLogo;
-      if(this.state.isSignedIn){
+      if(this.state.isSignedIn && !this.state.customer){
         userLogo= <div className="loggedUser">
           <img id="appLogo" src={this.state.userLogo} className='userLogo' alt='App_logo' />
           <p>Hello, {this.state.userName}</p>
@@ -257,11 +288,9 @@ revokeAllScopes = function() {
             {console.log(this.state.isSignedIn)}
             <p className="App-title"> * * Manage your queues here * * </p>
             </div>
-            
             {userLogo}
             {/* {this.getContent()} */}
             {/* <div id="loginButton" className='loginButton' >Login with Google</div> */}
-            
           </header>
           <br></br><br></br>
           <button className="buttonCustom newTable" variant="outlined" color="primary" onClick={this.addTable}>+ New Queue</button>
@@ -280,7 +309,7 @@ revokeAllScopes = function() {
     }
 
 // ********** Table detailed view *************
-    else if (this.state.isSignedIn && !this.state.home) {
+    else if (this.state.isSignedIn && !this.state.home && !this.state.customer) {
       const that = this;
       let userLogo;
       if(this.state.isSignedIn){
@@ -386,6 +415,7 @@ revokeAllScopes = function() {
         </div>
       );
     }
+
   }
 
   table_pull = (names) => {
@@ -515,7 +545,6 @@ revokeAllScopes = function() {
       //   //that.setState({ newMyDetails: { ...that.state.newMyDetails, [key_1]: value } });
       // })
     
-
       const docRefWaiting = db.ref("/Users/"+that.state.userId+'/all_queues/dine_in_customers/waiting_list/');
       docRefWaiting.on("child_added", function (snapshot) {
         const key_2 = snapshot.key;
@@ -523,26 +552,6 @@ revokeAllScopes = function() {
         that.setState({ waitMyDetails: { ...that.state.waitMyDetails, [key_2]: value_wait } });
   
       })
-    //  console.log('inside timeout')
-    // setTimeout(() => {
-    //   const docRefTables = db.ref("/Users/"+that.state.userId+'/all_queues/');
-    //   docRefTables.on("child_added", function (snapshot) {
-    //     const table_key = snapshot.key;
-    //     //const value = snapshot.val();
-    //     console.log(that.state.userId);
-    //     that.setState({ title_names: [...that.state.title_names, table_key] });
-    //     //that.setState({ newMyDetails: { ...that.state.newMyDetails, [key_1]: value } });
-    //   })
-  
-    //   const docRefWaiting = db.ref("/Users/"+that.state.userId+'/all_queues/dine_in_customers/waiting_list/');
-    //   docRefWaiting.on("child_added", function (snapshot) {
-    //     const key_2 = snapshot.key;
-    //     const value_wait = snapshot.val();
-    //     that.setState({ waitMyDetails: { ...that.state.waitMyDetails, [key_2]: value_wait } });
-  
-    //   })
-    //   console.log('inside timeout')
-    // }, 1000);
     
   }
 }
