@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import check_logo from '../Media/check_logo.png';
 import cross_logo from '../Media/cross_logo.png';
+import alert_logo from '../Media/bell_icon.png';
+import call_logo from '../Media/call_icon.png';
+import calling_logo from '../Media/calling_icon.gif';
 
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -9,6 +12,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Alert from '@material-ui/lab/Alert';
+import swal from '@sweetalert/with-react'
+
 
 
 import Button from '@material-ui/core/Button';
@@ -39,7 +45,15 @@ const table_list = (props) =>{
         <TableContainer className='Table_block'>
           <Table stickyHeader aria-label="sticky table">
             {/* <TableHead className='stickyTry'> */}
+            
             <TableRow className='Table-head-row-own'>
+            <TableCell
+                  key='position'
+                  align='right'
+                  style={{ minWidth: '70px' }}
+                >
+                Position
+              </TableCell>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
@@ -49,6 +63,7 @@ const table_list = (props) =>{
                     {column.label}
                   </TableCell>
                 ))}
+                
                 <TableCell
                   key='actions'
                   align='right'
@@ -56,6 +71,14 @@ const table_list = (props) =>{
                 >
                   Actions
               </TableCell>
+              <TableCell
+                  key='alert'
+                  align='right'
+                  style={{ minWidth: '70px' }}
+                >
+              Alerts
+              </TableCell>
+              
              </TableRow>
              
             {/* </TableHead> */}
@@ -64,9 +87,17 @@ const table_list = (props) =>{
                 const name_value  = props.details[key].name;
                 const size_value  = props.details[key].size;
                 const phone_value = props.details[key].phone;
+                const position_value = props.details[key].position;
+                if(size_value!==undefined){
+                  //console.log("size value :: :: "+size_value);
+                  props.customerPositionUpdater(props.title,key,index+1);
+                }
                 return (
                   <TableRow hover key={key}>
                     {/*{console.log(key)}*/}
+                    <TableCell key={columns.position} align='right'>
+                    {index+1}{position_value}
+                    </TableCell>
                     <TableCell key={columns.name} align='right'>
                       {name_value}
                     </TableCell>
@@ -76,9 +107,14 @@ const table_list = (props) =>{
                     <TableCell key={columns.phone} align='right'>
                       {phone_value}
                     </TableCell>
+                    
                      <TableCell align='right'>
-                      <img onClick={() => { props.check(props.title,key) }}  src={check_logo} alt='check-in' style={{ height: '24px', width: '24px', paddingRight: '10px' }} />
-                      <img onClick={props.cross} src={cross_logo} alt='cross' style={{ height: '24px', width: '24px' }} />
+                      <img onClick={() => { props.check(props.title,key,index+1) }}  src={check_logo} alt='check-in' style={{cursor:'pointer', height: '24px', width: '24px', paddingRight: '10px' }} />
+                      <img onClick={props.cross} src={cross_logo} alt='cross' style={{ cursor:'pointer',height: '24px', width: '24px' }} />
+                    </TableCell>
+                    <TableCell align='right'>
+                      <img onClick={()=>{swal('Sending email alert',{timer:1000,})}} src={alert_logo} alt='check-in' style={{ cursor:'pointer',height: '24px', width: '24px', paddingRight: '10px' }} />
+                      <img onClick={()=>{swal(<div><p>Calling :- {name_value}</p> <img src={calling_logo} style={{ height: '40px', width: '40px', paddingRight: '10px'}}/></div>,{buttons: false,timer:2500,})}} src={call_logo} alt='cross' style={{ cursor:'pointer',height: '24px', width: '24px' }} />
                     </TableCell> 
                   </TableRow>
                 );

@@ -11,6 +11,7 @@ import Pop_up_form from './Pop_up_form/Pop_up';
 //import Home from './Home/Home';
 import Queue from './Home/Queue_list';
 import Add_table from './Add_table/Add_table';
+import swal from '@sweetalert/with-react'
 
 import Customer from './Customer/Customer'
 import {Route, Link, NavLink} from 'react-router-dom'
@@ -56,7 +57,7 @@ class App extends Component {
     userLogo:'',
     userId:'',
     userName:'',
-    customer:true,
+    customer:false,
   }
 
   handleClickOpen = ev => {
@@ -122,7 +123,7 @@ class App extends Component {
  
   loadTable = (tableName) => {
     this.setState({ home: !this.state.home })
-    console.log(this.state.title_names);
+    //console.log(this.state.title_names);
     this.setState({ renderTable: tableName })
   }
 
@@ -142,17 +143,19 @@ class App extends Component {
     // Run JavaScript stuff here
     let scrollPosition = Math.round(window.scrollY);
     console.log('scrolling' + scrollPosition)
-    if (scrollPosition > 30) {
+    if (scrollPosition > 70) {
       document.querySelector('header').classList.add('sticky');
       document.querySelector(".App-logo").classList.add('sticky');
+      document.querySelector(".userLogo").classList.add('sticky');
     }
     // If not, remove "sticky" class from header
-    else if (scrollPosition < 30) {
+    else if (scrollPosition < 10) {
       document.querySelector('header').classList.remove('sticky');
       document.querySelector(".App-logo").classList.remove('sticky');
+      document.querySelector(".userLogo").classList.remove('sticky');
     }
 
-  }, 200);
+  }, 400);
 
   addTable = () => {
     this.setState({ tablePopUp: true })
@@ -203,6 +206,18 @@ revokeAllScopes = function() {
   });
 }
 
+customerViewToggle = ()=>{
+  this.setState(prevState=>({
+    customer:!prevState.customer
+  }));
+  console.log('inside customer view toggle')
+}
+
+customerPositionUpdater = (table,row_key,currentPosition)=>{
+//console.log('this is current position of '+currentPosition);
+db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_key).update({position:currentPosition});
+}
+
   render() {
     // ********** Testing customer view *************
     if(this.state.customer){
@@ -218,13 +233,16 @@ revokeAllScopes = function() {
       <div className="Toolbar"> 
           <nav>
               <ul>
-                <li><NavLink exact to="/"        >Home</NavLink></li>
+                <li><NavLink exact to="/" >Home</NavLink></li>
                 <li><NavLink to="/routing" >Routing</NavLink></li>
                 <li><NavLink to="/Customer">Customer</NavLink></li>
               </ul>
             </nav>
           </div>
-      <Route path="/Customer" exact component={Customer}/>
+      <Route path="/Customer" exact 
+      render={props => 
+        <Customer toggle={this.customerViewToggle} />
+      }/>
       <body><h2>Routing</h2></body>
 
       </div>
@@ -285,7 +303,7 @@ revokeAllScopes = function() {
           <header className="App-header">
             <div className="appHeaderInner">
             <img id="appLogo" src={logo} className='App-logo' alt='App_logo' />
-            {console.log(this.state.isSignedIn)}
+            {/* {console.log(this.state.isSignedIn)} */}
             <p className="App-title"> * * Manage your queues here * * </p>
             </div>
             {userLogo}
@@ -294,6 +312,7 @@ revokeAllScopes = function() {
           </header>
           <br></br><br></br>
           <button className="buttonCustom newTable" variant="outlined" color="primary" onClick={this.addTable}>+ New Queue</button>
+          <button className="buttonCustom" variant="outlined" color="primary" onClick={this.customerViewToggle}>Customer view</button>
           {/* <Button onClick={this.loadTable} variant="outlined" color="primary" >Click to go to tables</Button><br></br> */}
           {/*<input type='text' placeholder='Enter new table name' onKeyDown={(e)=>this.search(e)} onChange={(e)=>this.handleChange(e)}/>
           <Home/>*/}
@@ -344,6 +363,7 @@ revokeAllScopes = function() {
                     comment='+Add new'
                     size={total_size}
                     sizeComment='Total customers in line: '
+                    customerPositionUpdater={this.customerPositionUpdater}
                   />
                   <p>undefined</p>
                 </div>
@@ -364,6 +384,7 @@ revokeAllScopes = function() {
                     comment='+Add new'
                     size={total_size}
                     sizeComment='Total customers in line: '
+                    customerPositionUpdater={this.customerPositionUpdater}
                   />
                   <Table_own
                     title={names}
@@ -374,6 +395,7 @@ revokeAllScopes = function() {
                     comment='+Waiting list'
                     size={wait_total_size}
                     sizeComment='Total customers waiting line: '
+                    customerPositionUpdater={this.customerPositionUpdater}
                   />
                   <p>Both</p>
                 </div>
@@ -409,6 +431,7 @@ revokeAllScopes = function() {
             active={this.state.active}
             submit={() => this.submitForm()}
             header='Fill in the customer details'
+            nameInputChange={this.nameInputChange}
           />
 
           {/* Add waiting list  button*/}
@@ -418,12 +441,17 @@ revokeAllScopes = function() {
 
   }
 
+  nameInputChange=(e)=>{
+    console.log(e.target.value);
+  }
+
   table_pull = (names) => {
     let temp_details;
     const docTablePersons = db.ref("/Users/"+this.state.userId+'/all_queues/' + names + '/main_list/');
     docTablePersons.on("child_added", function (snapshot) {
       const key_1 = snapshot.key;
       const value = snapshot.val();
+      //console.log(snapshot);
       //console.log(names);
       //console.log(key_1);
       temp_details = { ...temp_details, [key_1]: value };
@@ -445,11 +473,16 @@ revokeAllScopes = function() {
     return temp_details;
   }
 
-  clicked = (table, row_key) => {
+  clicked = (table, row_key, position) => {
     console.log('Deleted selected row:' + row_key + "from" + table);
+    console.log('position :: '+position)
     db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/" + row_key).remove(); // remove from firebase DB
     const { [row_key]: _, ...newMyDetails1 } = this.state.newMyDetails; //remove from local state 
     this.setState({ newMyDetails: newMyDetails1 }) // update local state after removing 
+
+    //db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_key).update({position:position});
+
+    swal("Done!", "Customer now sent to the table!", "success",{buttons: false,timer:1500,});
   }
   waitingClicked = (table, row_key) => {
     console.log(table);
@@ -512,7 +545,7 @@ revokeAllScopes = function() {
             docRefTables.on("child_added", function (snapshot) {
             const table_key = snapshot.key;
             //const value = snapshot.val();
-            console.log(that.state.userId);
+           // console.log(that.state.userId);
             that.setState({ title_names: [...that.state.title_names, table_key] });
             //that.setState({ newMyDetails: { ...that.state.newMyDetails, [key_1]: value } });
       })

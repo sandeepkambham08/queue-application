@@ -18,6 +18,12 @@ margin-left: 45%;
   border:2px solid rgba(20, 20, 73, 0.87);
 }
 
+.userLogo.sticky{
+  height: 20px;
+  border-radius: 9px;
+  border:1px solid rgba(20, 20, 73, 0.87);
+}
+
 .loggedUser{
   float:right;
   padding-right: 5%;
@@ -53,6 +59,8 @@ margin-left: 45%;
   height: 80px;
   transition: height 400ms ease;
   display: inline-block;
+  text-align: center;
+
 }
 
 .App-header {
@@ -64,7 +72,7 @@ margin-left: 45%;
   top:0px;
   font-size: 15px;
   transition: font-size 400ms ease; 
-  transition: padding 200ms ease; 
+  transition: padding 400ms ease; 
   float:left;
 }
 .appHeaderInner{
@@ -73,14 +81,14 @@ margin-left: 45%;
   margin-left: 40%;
 }
 header.sticky {
-  padding: 5px 10px;
+  padding: 10px 10px 10px 50px;
   font-size: 10px;
-  display: inline-block;
+
 }
 .App-logo.sticky {
   /* animation: App-logo-spin infinite 5s linear; */
    height: 40px;
-   display: inline-block;
+   text-align: center;
  }
 
 .App-title {
@@ -244,7 +252,7 @@ box-shadow: 0;
 }
 .Phone-details-block{
   padding-left: 100px ;
-  padding-top:20px ;
+  padding-top:10px ;
 }
 
 .MuiPaper-rounded{
