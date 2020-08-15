@@ -85,11 +85,11 @@ class App extends Component {
   handleSizeButtonClick = ev => {
     const value = ev.currentTarget.value;
     this.setState({ button: value });
-    console.log(ev.currentTarget.value);
+    console.log("Clicked this size :::::::: "+ev.currentTarget.value);
 
     //Stay highlight after selection
     const clicked = ev.target.getAttribute('id');
-    console.log(ev.target.id);
+    console.log("after stay highlight ---  - - "+ev.target.id);
     if (this.state.active === clicked) {
       this.setState({ active: '' });
 
@@ -114,6 +114,7 @@ class App extends Component {
     }
     else {
       db.ref("/Users/"+this.state.userId+"/all_queues/" + table_name + "/main_list").push({ name: newName, size: newSize, phone: newPhone });
+      console.log('***************** Should only run after submitting the form ***************** ')
     }
 
     this.setState({ active: '' });
@@ -170,6 +171,7 @@ class App extends Component {
     this.setState({ title_names: [...this.state.title_names, newName] });
     db.ref("/Users/"+this.state.userId+"/all_queues/" + newName + "/main_list/").push(0);
     db.ref("/Users/"+this.state.userId+"/all_queues/" + newName + "/waiting_list/").push(0);
+    console.log('***************** Should only run in new table ***************** ')
   }
   getContent() {
     if (this.state.isSignedIn) {
@@ -243,7 +245,7 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
       render={props => 
         <Customer toggle={this.customerViewToggle} />
       }/>
-      <body><h2>Routing</h2></body>
+      {/* <body><h2>Routing</h2></body> */}
 
       </div>
       )
@@ -287,6 +289,9 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
               />
             )
           })}
+          <Queue
+          add_new_table={this.addTable}
+          />
         </div>
       )
       let userLogo;
@@ -311,7 +316,7 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
             {/* <div id="loginButton" className='loginButton' >Login with Google</div> */}
           </header>
           <br></br><br></br>
-          <button className="buttonCustom newTable" variant="outlined" color="primary" onClick={this.addTable}>+ New Queue</button>
+          {/* <button className="buttonCustom newTable" variant="outlined" color="primary" onClick={this.addTable}>+ New Queue</button> */}
           <button className="buttonCustom" variant="outlined" color="primary" onClick={this.customerViewToggle}>Customer view</button>
           {/* <Button onClick={this.loadTable} variant="outlined" color="primary" >Click to go to tables</Button><br></br> */}
           {/*<input type='text' placeholder='Enter new table name' onKeyDown={(e)=>this.search(e)} onChange={(e)=>this.handleChange(e)}/>
@@ -319,7 +324,7 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
           <Add_table
             open={this.state.tablePopUp}
             close={this.closeTablePopUp}
-            submit={this.tableNameSubmit}
+            submit={()=>{this.tableNameSubmit()}}
           />
           {window.addEventListener('scroll', this.checkHeader)}
           {summary}
@@ -345,10 +350,12 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
               let total_size = 0;
               let wait_total_size = 0;
               let temp_table = this.table_pull(names);
-              Object.keys(temp_table).map((key) => {
-                const size_value = temp_table[key].size;
-                total_size = total_size + Number(size_value);
-              })
+              if (Object.keys(temp_table).length!==0){
+                Object.keys(temp_table).map((key) => {
+                  const size_value = temp_table[key].size;
+                  total_size = total_size + Number(size_value);
+                })
+              }
               let wait_temp_table = this.wait_table_pull(names);
               //console.log(typeof wait_temp_table);
               //console.log(temp_table);
@@ -429,7 +436,7 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
             name_input={this.nameInput}
             size_select={this.handleSizeButtonClick}
             active={this.state.active}
-            submit={() => this.submitForm()}
+            submit={() => {this.submitForm()}}
             header='Fill in the customer details'
             nameInputChange={this.nameInputChange}
           />

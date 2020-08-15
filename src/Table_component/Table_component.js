@@ -27,17 +27,17 @@ const columns = [
 ];
 
 const table_list = (props) =>{
-  if (props.details === null || typeof props.details === 'undefined')
+  if (Object.keys(props.details).length===0)
   {
-    console.log(typeof props.details)
+    console.log((Object.keys(props.details).length))
     return(
       <div>
         Table already deleted please go back
       </div>
     )
   }
-  else if(props.details !== null || typeof props.details !== 'undefined'){
-    console.log(typeof props.details)
+  else if(Object.keys(props.details).length!==0 ){
+    //console.log(Object.keys(props.details).length===0 && props.details.constructor===Object)
     return ( 
       <div>
       <Paper style={{ width: "80%", padding: '2% 10%', boxShadow: '0 0 0', }}>

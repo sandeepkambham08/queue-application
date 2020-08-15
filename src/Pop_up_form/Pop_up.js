@@ -130,23 +130,23 @@ class Pop_up_form extends React.Component {
               <div className='Buttons-block'>
                 <div className='Button-first-set'>
                   <ButtonGroup id='size_details' label='Size details' name="size_details" variant="contained" >
-                    <Button value="1" onClick={this.props.size_select} id={(this.props.name)+"button_1"} className={`check1 ${this.props.active==="button_1"? 'active':''}`} >1</Button>
-                    <Button value="2" onClick={this.props.size_select} id={(this.props.name)+"button_2"} className={`check1 ${this.props.active==="button_2"? 'active':''}`} >2</Button>
-                    <Button value="3" onClick={this.props.size_select} id={(this.props.name)+"button_3"} className={`check1 ${this.props.active==="button_3"? 'active':''}`} >3</Button>
+                    <Button value="1" onClick={this.props.size_select} id={(this.props.name)+"button_1"} className={`check1 ${this.props.active===(this.props.name)+"button_1"? 'active':''}`} >1</Button>
+                    <Button value="2" onClick={this.props.size_select} id={(this.props.name)+"button_2"} className={`check1 ${this.props.active===(this.props.name)+"button_2"? 'active':''}`} >2</Button>
+                    <Button value="3" onClick={this.props.size_select} id={(this.props.name)+"button_3"} className={`check1 ${this.props.active===(this.props.name)+"button_3"? 'active':''}`} >3</Button>
                   </ButtonGroup>
                 </div>
                 <div className='Button-second-set'> 
                   <ButtonGroup variant="contained" >
-                    <Button value="4" onClick={this.props.size_select} className={`check1 ${this.props.active==="button_4"? 'active':''}`} id={(this.props.name)+"button_4"} >4</Button>
-                    <Button value="5" onClick={this.props.size_select} className={`check1 ${this.props.active==="button_5"? 'active':''}`} id={(this.props.name)+"button_5"}  >5</Button>
-                    <Button value="6" onClick={this.props.size_select} className={`check1 ${this.props.active==="button_6"? 'active':''}`} id={(this.props.name)+"button_6"} >6</Button>
+                    <Button value="4" onClick={(e)=>{this.props.size_select(e)}} className={`check1 ${this.props.active===(this.props.name)+"button_4"? 'active':''}`} id={(this.props.name)+"button_4"} >4</Button>
+                    <Button value="5" onClick={this.props.size_select} className={`check1 ${this.props.active===(this.props.name)+"button_5"? 'active':''}`} id={(this.props.name)+"button_5"}  >5</Button>
+                    <Button value="6" onClick={this.props.size_select} className={`check1 ${this.props.active===(this.props.name)+"button_6"? 'active':''}`} id={(this.props.name)+"button_6"} >6</Button>
                   </ButtonGroup>
                 </div>
                 <div className='Button-third-set'>
                   <ButtonGroup variant="contained" >
-                    <Button value="7" onClick={this.props.size_select} className={`check1 ${this.props.active==="button_7"? 'active':''}`} id={(this.props.name)+"button_7"} >7</Button>
-                    <Button value="8" onClick={this.props.size_select} className={`check1 ${this.props.active==="button_8"? 'active':''}`} id={(this.props.name)+"button_8"} >8</Button>
-                    <Button value="9" onClick={this.props.size_select} className={`check1 ${this.props.active==="button_>9"? 'active':''}`} id={(this.props.name)+"button_>9"} >>8</Button>
+                    <Button value="7" onClick={this.props.size_select} className={`check1 ${this.props.active===(this.props.name)+"button_7"? 'active':''}`} id={(this.props.name)+"button_7"} >7</Button>
+                    <Button value="8" onClick={this.props.size_select} className={`check1 ${this.props.active===(this.props.name)+"button_8"? 'active':''}`} id={(this.props.name)+"button_8"} >8</Button>
+                    <Button value="9" onClick={this.props.size_select} className={`check1 ${this.props.active===(this.props.name)+"button_>9"? 'active':''}`} id={(this.props.name)+"button_>9"} >>8</Button>
                   </ButtonGroup>
                 </div>
               </div>

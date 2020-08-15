@@ -1,11 +1,20 @@
 .Queue_block{
     display: inline-block;
     padding: 45px 10px;
+    margin: 0px 20px;
+    max-width:242px;
 }
 .Queue_list:hover{
-    padding: 10px 30px;
+    /* padding: 10px 30px; */
     background:  rgba(26, 25, 25, 0.877);
     color:white;
+    box-shadow:5px 10px 10px 2px rgb(11, 100, 93);;
+}
+.Queue_name{
+    color: ivory;
+    background-color: rgba(26, 25, 25, 0.877);
+    padding: 10px;
+    background-blend-mode: inherit;
 }
 
 .Queue_list{
@@ -13,14 +22,15 @@
     border-radius: 0.5em;
     display: inline-block;
     cursor: pointer;
-    background:linear-gradient(180deg, rgba(26, 25, 25, 0.877) 60%, #FFFF, #FFFF 30%);
-    margin-right: 20px;
+    /* background:linear-gradient(180deg, rgba(26, 25, 25, 0.877) 60%, #FFFF, #FFFF 30%); */
     height: auto;
     align-items: center;
     min-width: 200px;
-    padding: 10px 20px;
-    transition: background color 300ms ease-in-out;
-    transition: padding 400ms ease-in-out;
+    min-height: 100px;
+    max-height: 150px;
+    /* padding: 10px 20px; */
+    transition: background color 200ms ease-in-out;
+    transition: padding 200ms ease-in-out;
 }
 
 .Queue_list h2{
