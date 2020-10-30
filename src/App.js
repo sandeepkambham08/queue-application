@@ -29,7 +29,7 @@ var firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig,"other1");
 const db = app.database();
 //firebase.analytics();
 
@@ -275,10 +275,12 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
             //console.log(names);
             let total_size = 0;
             let temp_table = this.table_pull(names);
-            Object.keys(temp_table).map((key) => {
-              const size_value = temp_table[key].size;
-              total_size = total_size + Number(size_value);
-            })
+            if (temp_table!==undefined){
+              Object.keys(temp_table).map((key) => {
+                const size_value = temp_table[key].size;
+                total_size = total_size + Number(size_value);
+              })
+            }
             return (
               <Queue
                 key={names}
@@ -317,7 +319,7 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
           </header>
           <br></br><br></br>
           {/* <button className="buttonCustom newTable" variant="outlined" color="primary" onClick={this.addTable}>+ New Queue</button> */}
-          <button className="buttonCustom" variant="outlined" color="primary" onClick={this.customerViewToggle}>Customer view</button>
+         
           {/* <Button onClick={this.loadTable} variant="outlined" color="primary" >Click to go to tables</Button><br></br> */}
           {/*<input type='text' placeholder='Enter new table name' onKeyDown={(e)=>this.search(e)} onChange={(e)=>this.handleChange(e)}/>
           <Home/>*/}
@@ -328,6 +330,7 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
           />
           {window.addEventListener('scroll', this.checkHeader)}
           {summary}
+          <button className="buttonCustom" variant="outlined" color="primary" onClick={this.customerViewToggle}>Customer view</button>
         </div>
       )
     }
@@ -350,7 +353,7 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
               let total_size = 0;
               let wait_total_size = 0;
               let temp_table = this.table_pull(names);
-              if (Object.keys(temp_table).length!==0){
+              if (temp_table!==undefined){
                 Object.keys(temp_table).map((key) => {
                   const size_value = temp_table[key].size;
                   total_size = total_size + Number(size_value);
@@ -484,9 +487,9 @@ db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_ke
     console.log('Deleted selected row:' + row_key + "from" + table);
     console.log('position :: '+position)
     db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/" + row_key).remove(); // remove from firebase DB
-    const { [row_key]: _, ...newMyDetails1 } = this.state.newMyDetails; //remove from local state 
-    this.setState({ newMyDetails: newMyDetails1 }) // update local state after removing 
-
+     const { [row_key]: _, ...newMyDetails1 } = this.state.newMyDetails; //remove from local state 
+     this.setState({ newMyDetails: newMyDetails1 }) // update local state after removing 
+    console.log('***************** Should only run if deleted ***************** ')
     //db.ref("/Users/"+this.state.userId+"/all_queues/" + table + "/main_list/"+row_key).update({position:position});
 
     swal("Done!", "Customer now sent to the table!", "success",{buttons: false,timer:1500,});

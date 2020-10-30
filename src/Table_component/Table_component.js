@@ -27,9 +27,9 @@ const columns = [
 ];
 
 const table_list = (props) =>{
-  if (Object.keys(props.details).length===0)
+  if (props.details===undefined)
   {
-    console.log((Object.keys(props.details).length))
+    // console.log((Object.keys(props.details).length))
     return(
       <div>
         Table already deleted please go back

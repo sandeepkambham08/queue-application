@@ -42,10 +42,10 @@ const Queue = (props) =>{
             <div className='Queue_block' >
             <Card variant="outlined" className='Queue_list'>
             <CardContent style={{padding:'0px'}} onClick={props.add_new_table}>
-            <Typography  className='Queue_name' gutterBottom style={{fontSize:"35px"}}>
+            <Typography  className='Queue_name' gutterBottom style={{fontSize:"30px", backgroundColor: "rgba(26, 25, 25, 0.677)"}}>
             +
             </Typography>
-            <Typography variant="body2" component="p" style={{fontSize:"18px"}}>
+            <Typography variant="body2" component="p" style={{fontSize:"15px",color:"gray"}}>
             Create new Queue
               <br />
             {props.size}

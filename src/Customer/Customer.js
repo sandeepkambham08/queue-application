@@ -44,7 +44,7 @@ class customer extends Component {
 
     searchFromDb=(customerName)=>{
         let name_found_counter=0;
-        db.ref("/Users/").on('child_added',function(restaurants){
+         ("/Users/").on('child_added',function(restaurants){
             //console.log(snapshot.val());
             restaurants.forEach(function(allQueues) 
             {//console.log(child);
@@ -80,6 +80,7 @@ class customer extends Component {
     }
 
     render(){
+        console.log("Inside customer");
         if(this.state.nameFound && this.state.showQueueDetails){
         queueDetails=(
             <div className="Testing">
