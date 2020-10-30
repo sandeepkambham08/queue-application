@@ -2,8 +2,11 @@
 
 ### This is a application developed to create and manage queues. 
 
-![Alt text](./src/media/Queue_application_screenshot1.jpg?raw=true "Queue_application_screenshot1")
-![Alt text](./src/media/Queue_application_screenshot2.jpg?raw=true "Queue_application_screenshot2")
+![Alt text](./src/Media/Queue_application_screenshot1.jpg?raw=true "Queue_application_screenshot1")
+![Alt text](./src/Media/Queue_application_screenshot2.jpg?raw=true "Queue_application_screenshot2")
+
+
+Website can be accessed at [Queue-application](https://queue-application-firebase.web.app/)
 
 ## Features in app :
   - Login/signup with google 
@@ -26,5 +29,3 @@
   - How to communicate with firebase(backend) to push and retreive data
   - How to fetch a person data - for customer view 
   - How to authenticate a user with google sign in
-
-The website can be accessed at ... 
